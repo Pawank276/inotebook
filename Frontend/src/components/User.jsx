@@ -154,7 +154,7 @@ const User = () => {
                                                 <img
                                                     src={
                                                         user.profilepic && typeof user.profilepic === 'string'
-                                                            ? `http://localhost:5000${user.profilepic}`
+                                                            ? `${user.profilepic}`
                                                             : 'user.svg'
                                                     }
                                                     alt="Profile"

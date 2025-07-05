@@ -5,10 +5,11 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import fetchuser from '../Middleware/fetchuser.js'; // Ens
-// const secret = 'inotebook@myapp$'
+import fetchuser from '../Middleware/fetchuser.js';
 import multer from 'multer';
 import dotenv from 'dotenv';
+import cloudinary from '../config/cloudinary.js';
+import fs from 'fs';
 dotenv.config();
 const router = Router();
 
@@ -146,22 +147,31 @@ router.delete(
 
 
 //Route 4:- add profile picture
-
-
 router.post('/updateprofile', upload.single('profilepic'), async (req, res) => {
     try {
         const { name, email, date } = req.body;
-        const profilePicPath = req.file ? `/uploads/profilepics/${req.file.filename}` : null;
+        let profilePicUrl = null;
+
+        if (req.file) {
+            const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'inotebook-profilepics',
+            });
+            profilePicUrl = uploadResult.secure_url;
+
+            // Delete local file (not needed anymore)
+            fs.unlinkSync(req.file.path);
+        }
 
         const user = await User.findByIdAndUpdate(req.user.id, {
             name,
             email,
             date,
-            ...(profilePicPath && { profilePic: profilePicPath }),
+            ...(profilePicUrl && { profilePic: profilePicUrl }),
         }, { new: true });
 
-        res.json(user);
+        res.json({ success: true, user });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Error updating profile' });
     }
 });
