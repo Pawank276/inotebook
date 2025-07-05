@@ -6,7 +6,7 @@ import AnimatedContent from '../components/Animation/AnimatedContent'
 
 const Note = () => {
 
-    const host = "http://localhost:5000"
+    const host = "https://inotebook-backend-2r0d.onrender.com"
     const location = useLocation();
     const { id } = location.state;
     const [note, setNote] = useState({})
