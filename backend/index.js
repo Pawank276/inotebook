@@ -4,7 +4,6 @@ import cors from 'cors';
 import authRoutes from './Routes/auth.js';
 import notesRoutes from './Routes/notes.js';
 import dotenv from 'dotenv';
-import cors from 'cors';
 dotenv.config();
 connectToMongo();
 const app = express()
