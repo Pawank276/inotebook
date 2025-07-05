@@ -6,23 +6,14 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import fetchuser from '../Middleware/fetchuser.js';
-import multer from 'multer';
 import dotenv from 'dotenv';
 import cloudinary from '../config/cloudinary.js';
 import fs from 'fs';
+import multer from 'multer';
+import streamifier from 'streamifier';
 dotenv.config();
 const router = Router();
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
-});
-const upload = multer({ storage });
-
+const upload = multer({ storage: multer.memoryStorage() });
 // ROUTE 1 :- create user
 
 router.post(
@@ -145,29 +136,39 @@ router.delete(
         }
     })
 
-
+const streamUpload = (buffer) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            { folder: 'profilepics' },
+            (error, result) => {
+                if (result) resolve(result);
+                else reject(error);
+            }
+        );
+        streamifier.createReadStream(buffer).pipe(stream);
+    });
+};
 //Route 4:- add profile picture
-router.post('/updateprofile', upload.single('profilepic'), async (req, res) => {
+router.post('/updateprofile', fetchuser, upload.single('profilepic'), async (req, res) => {
     try {
         const { name, email, date } = req.body;
         let profilePicUrl = null;
 
         if (req.file) {
-            const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'uploads',
-            });
-            profilePicUrl = uploadResult.secure_url;
-
-            // Delete local file (not needed anymore)
-            fs.unlinkSync(req.file.path);
+            const result = await streamUpload(req.file.buffer);
+            profilePicUrl = result.secure_url;
         }
 
-        const user = await User.findByIdAndUpdate(req.user.id, {
-            name,
-            email,
-            date,
-            ...(profilePicUrl && { profilePic: profilePicUrl }),
-        }, { new: true });
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                name,
+                email,
+                date,
+                ...(profilePicUrl && { profilePic: profilePicUrl }),
+            },
+            { new: true }
+        );
 
         res.json({ success: true, user });
     } catch (err) {
