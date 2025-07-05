@@ -14,7 +14,6 @@ app.use(cors({
     origin: allowedOrigins,
     credentials: true // if you send cookies or auth headers
 }));
-app.options('*', cors());   
 app.use(json());
 // app.use('/api/auth', require('./Routes/auth')); convert to ES6 import
 app.use('/api/auth', authRoutes);
