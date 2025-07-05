@@ -29,7 +29,7 @@ const Signup = () => {
                     dispatch(alertActions.clearAlert())
                 }, 2000)
             } else {
-                const response = await fetch(`https://inotebook-backend-2r0d.onrender.com/api/auth/createuser`, {
+                const response = await fetch(`https://inotebook-backend-nhrs.onrender.com/api/auth/createuser`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const Signup = () => {
                 </AnimatedContent>
 
             </section>
-           
+
         </>
     )
 }

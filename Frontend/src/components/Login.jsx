@@ -19,7 +19,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = credentials;
-        const response = await fetch(`https://inotebook-backend-2r0d.onrender.com/api/auth/login`, {
+        const response = await fetch(`https://inotebook-backend-nhrs.onrender.com/api/auth/login`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

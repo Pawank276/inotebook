@@ -7,7 +7,7 @@ import { alertActions } from '../store/alert';
 import Alert from '../components/Alert'
 import AnimatedContent from '../components/Animation/AnimatedContent'
 
-const host = "http://localhost:5000"
+const host = "https://inotebook-backend-nhrs.onrender.com"
 const Editform = () => {
     const [updated, setUpdated] = useState(false)
     const location = useLocation();

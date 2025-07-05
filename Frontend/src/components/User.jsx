@@ -9,7 +9,7 @@ import FuzzyText from '../components/Animation/FuzzyText';
 import { FaUserEdit } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 const User = () => {
-    const host = "https://inotebook-backend-2r0d.onrender.com";
+    const host = "https://inotebook-backend-nhrs.onrender.com";
     const navigate = useNavigate();
     const ref = useRef(null);
     const [user, setUser] = useState({ name: "", email: "", date: "", profilepic: "" })

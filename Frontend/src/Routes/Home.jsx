@@ -11,7 +11,7 @@ import AnimatedContent from '../components/Animation/AnimatedContent'
 import axios from 'axios'
 
 const Notes = () => {
-    const host = "https://inotebook-backend-2r0d.onrender.com";
+    const host = "https://inotebook-backend-nhrs.onrender.com";
     const noteitems = useSelector((store) => store.notes)
     const dispatch = useDispatch();
     const ref = useRef();
