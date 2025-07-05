@@ -13,15 +13,14 @@ dotenv.config();
 const router = Router();
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/profilepics/');
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
-    }
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // ROUTE 1 :- create user
 
@@ -148,26 +147,22 @@ router.delete(
 
 //Route 4:- add profile picture
 
-router.post("/updateprofile", fetchuser, upload.single("profilepic"), async (req, res) => {
+
+router.post('/updateprofile', upload.single('profilepic'), async (req, res) => {
     try {
         const { name, email, date } = req.body;
-        const profilePicPath = req.file ? `/uploads/${req.file.filename}` : null;
+        const profilePicPath = req.file ? `/uploads/profilepics/${req.file.filename}` : null;
 
-        const updatedUser = await User.findByIdAndUpdate(
-            req.user.id,
-            {
-                name,
-                email,
-                date,
-                ...(profilePicPath && { profilepic: profilePicPath })  // 👈 KEY FIX
-            },
-            { new: true }
-        );
+        const user = await User.findByIdAndUpdate(req.user.id, {
+            name,
+            email,
+            date,
+            ...(profilePicPath && { profilePic: profilePicPath }),
+        }, { new: true });
 
-        res.json({ success: true, user: updatedUser });
+        res.json(user);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Error updating profile' });
     }
 });
 
