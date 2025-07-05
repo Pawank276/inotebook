@@ -79,9 +79,9 @@ const User = () => {
         // add user's state values into dataabase as it is
         const { data } = await axios.post(`${host}/api/auth/updateprofile`, formData, {
             headers: {
-                "Content-Type": "multipart/form-data",
                 "auth-token": localStorage.getItem("token"),
-            },
+                "Content-Type": "multipart/form-data"
+            }
         });
         if (data.success) {
             setUser({

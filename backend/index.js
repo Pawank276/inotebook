@@ -8,7 +8,16 @@ dotenv.config();
 connectToMongo();
 const app = express()
 const port = process.env.PORT || 5000;
-app.use(cors());
+
+const allowedOrigins = [
+    'http://localhost:5173', // your dev frontend
+    'https://inotebook-5l23.onrender.com', // your deployed frontend
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+}));
 app.use(json());
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', notesRoutes);
