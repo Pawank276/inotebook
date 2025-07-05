@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const host = "http://localhost:5000";
+const host = "https://inotebook-backend-2r0d.onrender.com";
 
 const notesSlice = createSlice({
     name: "notes",
