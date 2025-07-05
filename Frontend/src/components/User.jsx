@@ -100,9 +100,10 @@ const User = () => {
                 progress: undefined,
                 theme: "dark",
             });
+
         }
     }
-
+    console.log(user.profilepic)
 
     return (
         <>{!localStorage.getItem('token') ?

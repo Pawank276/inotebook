@@ -22,9 +22,9 @@ const Footer = () => {
                             <p className="text-secondary">For any queries or suggestions, please contact me at <a href="mailto:pavankuntal27@gmail.com" className='text-decoration-none text-warning'>pavankuntal27@gmail.com</a></p>
                         </div>
                         <div className="col-md-12">
-                            <p className="text-secondary">Follow me on <Link href="linkedin.com/in/pavan-kuntal-191b51273/" target="_blank" className='text-decoration-none text-warning fs-3'>
+                            <p className="text-secondary">Follow me on <a href="linkedin.com/in/pavan-kuntal-191b51273/" target="_blank" className='text-decoration-none text-warning fs-3'>
                                 <BsLinkedin />
-                            </Link>
+                            </a>
                             </p>
                         </div>
                     </footer>

@@ -15,7 +15,7 @@ const router = Router();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/profilepics/');
+        cb(null, 'uploads');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
@@ -154,7 +154,7 @@ router.post('/updateprofile', upload.single('profilepic'), async (req, res) => {
 
         if (req.file) {
             const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'inotebook-profilepics',
+                folder: 'uploads',
             });
             profilePicUrl = uploadResult.secure_url;
 

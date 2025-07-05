@@ -8,13 +8,8 @@ dotenv.config();
 connectToMongo();
 const app = express()
 const port = process.env.PORT || 5000;
-const allowedOrigins = ['https://inotebook-5l23.onrender.com'];
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true // if you send cookies or auth headers
-}));
+app.use(cors());
 app.use(json());
-// app.use('/api/auth', require('./Routes/auth')); convert to ES6 import
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/uploads', express.static('uploads'));
