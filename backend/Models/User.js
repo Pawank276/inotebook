@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
         default: Date.now
     },
     profilepic: {
-        type: String,
+        type: Buffer,
         default: ""
     }
 })

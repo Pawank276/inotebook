@@ -153,7 +153,7 @@ const User = () => {
                                         {typeof user.profilepic === "string" && (
                                             <div className='col-md-6'>
                                                 <img
-                                                    src={user.profilepic ? `user.profilepic` : 'user.svg'}
+                                                    src={user.profilepic}
                                                     alt="Profile"
                                                     width={150}
                                                     height={150}
