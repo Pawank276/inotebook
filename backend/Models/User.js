@@ -25,5 +25,4 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-// module.exports = mongoose.model('user', UserSchema); change to ES6 export
 export default mongoose.model('User', UserSchema);
