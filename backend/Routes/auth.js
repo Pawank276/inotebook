@@ -166,7 +166,7 @@ router.post('/updateprofile', fetchuser, upload.single('profilepic'), async (req
                 name,
                 email,
                 date,
-                profilePic: profilePicUrl,
+                ...(profilePicUrl && { profilepic: profilePicUrl }),
             },
             { new: true }
         );
