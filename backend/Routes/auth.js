@@ -153,7 +153,6 @@ router.post('/updateprofile', fetchuser, upload.single('profilepic'), async (req
     try {
         const { name, email, date } = req.body;
         let profilePicUrl = "";
-        success = false;
         if (req.file) {
             const result = await streamUpload(req.file.buffer);
             console.log(result.secure_url)
