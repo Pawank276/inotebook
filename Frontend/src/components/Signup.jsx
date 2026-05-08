@@ -5,6 +5,8 @@ import { alertActions } from '../store/alert';
 import Alert from './Alert';
 import AnimatedContent from '../components/Animation/AnimatedContent'
 
+const host = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 const Signup = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -29,7 +31,7 @@ const Signup = () => {
                     dispatch(alertActions.clearAlert())
                 }, 2000)
             } else {
-                const response = await fetch(`https://inotebook-backend-nhrs.onrender.com/api/auth/createuser`, {
+                const response = await fetch(`${host}/api/auth/createuser`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

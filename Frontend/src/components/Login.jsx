@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { alertActions } from '../store/alert';
 import AnimatedContent from '../components/Animation/AnimatedContent'
 
+const host = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 const Login = () => {
     const [credentials, setCredentials] = useState({ email: "", password: "" })
     const ref = useRef();
@@ -18,37 +20,51 @@ const Login = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, password } = credentials;
-        const response = await fetch(`https://inotebook-backend-nhrs.onrender.com/api/auth/login`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-        });
-        const json = await response.json();
-        if (json.success) {
-            localStorage.setItem('token', json.authToken);
-            localStorage.setItem('name', json.name);
-            localStorage.setItem('email', json.email);
-            localStorage.setItem('date', json.date);
+        try {
+            const { email, password } = credentials;
+            const response = await fetch(`${host}/api/auth/login`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const json = await response.json();
+            if (json.success) {
+                localStorage.setItem('token', json.authToken);
+                localStorage.setItem('name', json.name || '');
+                localStorage.setItem('email', json.email || '');
+                localStorage.setItem('date', json.date || '');
+                dispatch(alertActions.showAlert({
+                    message: "Logged in successfully",
+                    type: "success"
+                }))
+                setTimeout(() => {
+                    dispatch(alertActions.clearAlert())
+                }, 2000)
+                navigate('/home');
+            }
+            else {
+                let errorMsg = "Login failed";
+                if (Array.isArray(json.errors) && json.errors.length > 0) {
+                    errorMsg = json.errors[0]?.msg || errorMsg;
+                } else if (typeof json.errors === 'string') {
+                    errorMsg = json.errors;
+                } else if (typeof json.error === 'string') {
+                    errorMsg = json.error;
+                }
+
+                dispatch(alertActions.showAlert({
+                    message: errorMsg,
+                    type: "danger"
+                }))
+                setTimeout(() => {
+                    dispatch(alertActions.clearAlert())
+                }, 2000)
+            }
+        } catch (error) {
             dispatch(alertActions.showAlert({
-                message: "Logged in successfully",
-                type: "success"
-            }))
-            setTimeout(() => {
-                dispatch(alertActions.clearAlert())
-            }, 2000)
-            navigate('/home');
-        }
-        else {
-            let i = 0;
-            dispatch(alertActions.showAlert({
-                message: json.errors[i].msg,
-                type: "danger"
-            }))
-            dispatch(alertActions.showAlert({
-                message: json.errors,
+                message: error.message || "Unable to login right now",
                 type: "danger"
             }))
             setTimeout(() => {
