@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { alertActions } from '../store/alert';
 import AnimatedContent from '../components/Animation/AnimatedContent'
 
-const host = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const host = import.meta.env.VITE_API_BASE_URL || 'https://inotebook-backend-nhrs.onrender.com';
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ email: "", password: "" })
